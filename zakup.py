@@ -6,7 +6,7 @@ import re
 from multiprocessing.dummy import Pool as ThreadPool
 
 def clear(text):
-    return re.sub( r'\s+', ' ', str(text))
+    return re.sub( r'\s+', ' ', text)
 
 def split(arr, count):
     '''Делим ссылки на части для мультипотока'''
@@ -15,7 +15,7 @@ def split(arr, count):
 def all_url():
     '''генерируем ссылки за указанный период
     Поменяйте в ссылке регион'''
-    a = date(2013, 1, 1) #Начало периода
+    a = date(2019, 1, 1) #Начало периода
     b = date(2019, 4, 10) #конец периода
     url_all = []
     for dt in rrule(DAILY, dtstart=a, until=b):
@@ -68,17 +68,20 @@ url_count = len(all_url())
 pagi = round(url_count / 5)
 pool = ThreadPool(5)
 page_count = []
-with open( 'zakup.csv', 'a') as f:
+
+record_file = 'zakup.csv'
+with open(record_file, 'a') as f:
     for part in (split(all_url(), pagi)): #458
         page_count.append(len(part))
-        print ('Страниц обработано: ' + str(sum(page_count)) + ' из ' + str(url_count))
+        print( 'Страниц обработано: {} из {}'.format(sum( page_count ), url_count))
         try:
-            r = pool.map(get_page, part)
-            for i in r:
-                if bool(i) == True:
-                    for item in i:
+            date_array = pool.map(get_page, part)
+            for sep in date_array:
+                if sep == True:
+                    for item in sep:
                         stroka = '|'.join(item)
                         f.write(stroka + '\n')
-        except:
-            print( "Ошибка" )
-print ('ок')
+        except IOError as e:
+            print("Ошибка записи в файл")
+            print(e)
+print ('Парсинг данных завершён успешно.')
