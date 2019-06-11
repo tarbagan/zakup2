@@ -77,10 +77,8 @@ with open( 'zakup.csv', 'a') as f:
             for i in r:
                 if bool(i) == True:
                     for item in i:
-                        stroka = item[0] + '|' + item[1] + '|' + item[2] + '|' \
-                                 + item[3] + '|' + item[4] + '|' + item[5] + '|'\
-                                 + item[6] + '|' + item[7] + '|' + item[8] + '|'
-                        f.write(str(stroka) + '\n')
+                        stroka = '|'.join(item)
+                        f.write(stroka + '\n')
         except:
             print( "Ошибка" )
 print ('ок')
