@@ -20,13 +20,21 @@ def all_url():
     url_all = []
     for dt in rrule(DAILY, dtstart=a, until=b):
         date_select = (dt.strftime("%d.%m.%Y"))
-        url = 'http://www.zakupki.gov.ru/epz/order/extendedsearch/results.html?morphology=on&openMode=USE_DEFAULT_PARAMS&pageNumber=1&sortDirection=false&recordsPerPage=_100&showLotsInfoHidden=false&fz44=on&fz223=on&ppRf615=on&fz94=on&af=on&ca=on&pc=on&pa=on&currencyIdGeneral=-1&publishDateFrom='+date_select+'&publishDateTo='+date_select+'&region_regions_5277386=region_regions_5277386&regions=5277386&regionDeleted=false&sortBy=UPDATE_DATE'
+        url = 'http://www.zakupki.gov.ru/epz/order/extendedsearch/results.html?' \
+              'morphology=on&openMode=USE_DEFAULT_PARAMS&pageNumber=1&' \
+              'sortDirection=false&recordsPerPage=_100&showLotsInfoHidden=' \
+              'false&fz44=on&fz223=on&ppRf615=on&fz94=on&af=on&ca=on&pc=on&pa=' \
+              'on&currencyIdGeneral=-1&publishDateFrom={}&publishDateTo={}&region_regions_5277386=' \
+              'region_regions_5277386&regions=5277386&regionDeleted=' \
+              'false&sortBy=UPDATE_DATE'.format(date_select,date_select)
         url_all.append(url)
     return url_all
 
 def get_page(uri):
     '''Парсинг страницы'''
-    headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'}
+    headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) '
+                             'AppleWebKit/537.36 (KHTML, like Gecko) '
+                             'Chrome/71.0.3578.98 Safari/537.36'}
     response = requests.get(uri, headers=headers ).text
     soup = bs(response, 'html.parser')
     tag = soup.findAll( "div", {"class": "registerBox"} )
