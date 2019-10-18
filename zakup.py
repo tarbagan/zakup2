@@ -1,3 +1,5 @@
+#autor Irgit Valery
+#Многопоточный парсер госзакупок с сохранением в csv
 import requests
 from bs4 import BeautifulSoup as bs
 from datetime import date
