@@ -2,7 +2,7 @@
 Многопоточный парсер госзакупок с сохранением в csv
 https://github.com/tarbagan/zakup2
 Автор: Иргит Валерий
-Версия 2
+Версия: 0.2
 """
 from multiprocessing.dummy import Pool as ThreadPool
 from dateutil.rrule import rrule, DAILY
@@ -11,11 +11,11 @@ from datetime import date
 import requests
 import re
 
-a = date(2020, 1, 1)  # Начало периода
-b = date(2020, 4, 19)  # конец периода
-id_region = '5277386'  # id региона
-thr = 5  # кол-во потоков
-record_file = 'zakup.csv'
+a = date(2020, 1, 1)        # Начало периода
+b = date(2020, 4, 19)       # конец периода
+id_region = '5277386'       # id региона
+thr = 5                     # кол-во потоков
+record_file = 'zakup2.csv'  # файл с результатами
 
 
 def split(arr, thr):
@@ -58,6 +58,7 @@ def request_url(url):
 
 
 def clear(text):
+    """Очистка текста"""
     text = re.sub(r'\s+', ' ', text)
     text = re.sub(r' ₽', '', text)
     text = text.lstrip()
@@ -66,6 +67,7 @@ def clear(text):
 
 
 def parser_start(soup):
+    """Парсер данных"""
     arr_item = []
     block = soup.findAll('div', {'class': 'search-registry-entry-block'})
     try:
@@ -98,7 +100,6 @@ def parser_start(soup):
     except Exception as e:
         print(e)
     return arr_item
-
 
 
 pool = ThreadPool(thr)
