@@ -107,6 +107,7 @@ pool = ThreadPool(thr)
 page_count = []
 item_count = []
 
+print ('Начинаю сбор данных, подождите...')
 with open(record_file, 'a', encoding='utf-8') as f:
     for arr_url in split(gen_url(), thr):
         date_array = pool.map(request_url, arr_url)
@@ -123,3 +124,5 @@ with open(record_file, 'a', encoding='utf-8') as f:
                     p_count = len(page_count)
                     z_count = len(item_count)
                     print(f'Страница {p_count}/закупок {z_count}: {item[1]}')
+
+print (f'Сбор данных завершен и записан в файл \nВсего {z_count}')
