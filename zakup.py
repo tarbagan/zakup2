@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 """
 Многопоточный парсер госзакупок с сохранением в csv
 https://github.com/tarbagan/zakup2
@@ -11,8 +12,8 @@ from datetime import date
 import requests
 import re
 
-a = date(2020, 1, 1)        # Начало периода
-b = date(2020, 4, 19)       # конец периода
+a = date(1991, 1, 1)        # Начало периода
+b = date(2020, 4, 26)       # конец периода
 id_region = '5277386'       # id региона
 thr = 5                     # кол-во потоков
 record_file = 'zakup2.csv'  # файл с результатами
@@ -106,7 +107,7 @@ pool = ThreadPool(thr)
 page_count = []
 item_count = []
 
-with open(record_file, 'a') as f:
+with open(record_file, 'a', encoding='utf-8') as f:
     for arr_url in split(gen_url(), thr):
         date_array = pool.map(request_url, arr_url)
         for page in date_array:
