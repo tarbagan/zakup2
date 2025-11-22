@@ -18,11 +18,11 @@ import time
 # -------------------------
 # НАСТРОЙКИ
 # -------------------------
-a = date(1991, 1, 1)        # Начало периода
-b = date(2020, 4, 26)       # Конец периода (включительно)
-id_region = '5277386'       # id региона (customerPlace)
+a = date(2013, 1, 1)        # Начало периода
+b = date(2025, 11, 22)       # Конец периода (включительно)
+id_region = '17000000000'       # id региона (customerPlace)
 thr = 5                     # Кол-во потоков
-record_file = 'zakup2.csv'  # Файл с результатами
+record_file = r'g:\WORK\Парсер закупок\zakup2.csv'  # Файл с результатами
 
 
 def gen_urls(start_date, end_date, region_id):
@@ -41,7 +41,7 @@ def gen_urls(start_date, end_date, region_id):
             "publishDateFrom={d}&publishDateTo={d}&applSubmissionCloseDateFrom=&"
             "applSubmissionCloseDateTo=&priceFromGeneral=&priceFromGWS=&priceFromUnitGWS=&priceToGeneral=&"
             "priceToGWS=&priceToUnitGWS=&currencyIdGeneral=-1&customerIdOrg=&agencyIdOrg=&"
-            "customerPlace={region}&customerPlaceCodes=17000000000&OrderPlacementSmallBusinessSubject=on&"
+            "customerPlace={region}&customerPlaceCodes={region}&OrderPlacementSmallBusinessSubject=on&"
             "OrderPlacementRnpData=on&OrderPlacementExecutionRequirement=on&orderPlacement94_0=0&"
             "orderPlacement94_1=0&orderPlacement94_2=0"
         ).format(d=date_str, region=region_id)
@@ -144,6 +144,7 @@ def parser_start(soup):
 def main():
     print("Генерация списка URL...")
     urls = gen_urls(a, b, id_region)
+
     total_pages = len(urls)
     print(f"Всего страниц для обработки: {total_pages}")
 
